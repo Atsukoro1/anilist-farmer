@@ -61,6 +61,17 @@ export default class Client {
         }
     });
 
+    /**
+     * Fetch global or following feed
+     * @param {Object} obj 
+     * @param {Number} [1] obj.page Number of page you want to return
+     * @param {String} [global] obj.type Type of feed (following or global)
+     * @param {String} [all] obj.filter
+     * @param {Boolean} [true] obj.isFollowing Display posts by users that are following you
+     * @param {Boolean} [true] obj.hasReplies Display posts with replies
+     * 
+     * @returns {Promise<Error | Object>}
+     */
     fetchGlobal = (obj = {}) => {
         return requester({
             query: fetchGlobalQuery,
@@ -75,6 +86,14 @@ export default class Client {
         })
     }
 
+    /**
+     * Toggle like on specific activity
+     * 
+     * @param {Object} obj
+     * @param {Number} obj.id - Id of the activity 
+     * 
+     * @returns {Promise<Error | Object>}
+     */
     toggleLike = (obj = {}) => {
         return requester({
             query: togglelikeQuery,
@@ -86,6 +105,14 @@ export default class Client {
         });
     }
 
+    /**
+     * Toggle follow for specific user
+     * 
+     * @param {Object} obj
+     * @param {Number} obj.id Id of the user
+     * 
+     * @returns {Promise<Error | Object>}
+     */
     toggleFollow = (obj = {}) => {
         return requester({
             query: togglefollowQuery,
@@ -96,18 +123,34 @@ export default class Client {
         });
     }
 
+    /**
+     * Comment on specific activity
+     * 
+     * @param {Object} obj
+     * @param {String} obj.text Content of the activity (could be HTML)
+     * @param {Number} obj.activityId Id of the activity you want to comment on
+     * 
+     * @returns {Promise<Error | Object>}
+     */
     commentActivity = (obj = {}) => {
         return requester({
             query: commentactivityQuery,
             variables: {
                 "text": obj?.text,
-                "type": obj?.type,
                 "activityId": obj?.activityId
             },
             instance: this.authorizedInstance
         })
     }
 
+    /**
+     * Fetch user by username
+     * 
+     * @param {Object} obj 
+     * @param {String} obj.name Username of the anilist user
+     * 
+     * @returns {Promise<Error | Object>}
+     */
     fetchUser = (obj = {}) => {
         return requester({
             query: fetchuserQuery,
@@ -118,6 +161,15 @@ export default class Client {
         })
     }
 
+    /**
+     * Fetch followings of the user
+     * 
+     * @param {Object} obj
+     * @param {Number} obj.id Unique identificator of the user
+     * @param {Number} obj.page Number of the page you want to return
+     *  
+     * @returns {Promise<Error | Object>}
+     */
     fetchUserFollowing = (obj = {}) => {
         return requester({
             query: fetchuserfollowingQuery, 
@@ -130,6 +182,15 @@ export default class Client {
         });
     }
 
+    /**
+     * Fetch followers of specific users
+     * 
+     * @param {Object} obj
+     * @param {Number} obj.id Unique identificator of the user
+     * @param {Number} obj.page Number of the page you want to return
+     * 
+     * @returns {Promise<Error | Object>} 
+     */
     fetchUserFollowers = (obj = {}) => {
         return requester({
             query: fetchuserfollowersQuery,
@@ -142,6 +203,14 @@ export default class Client {
         });
     }
 
+    /**
+     * Fetch anime list of specific user
+     * 
+     * @param {Object} obj
+     * @param {Number} obj.userId If of the user you want to fetch
+     * 
+     * @returns {Promise<Error | Object>} 
+     */
     fetchUserAnime = (obj = {}) => {
         return requester({
             query: fetchuseranimeQuery,
