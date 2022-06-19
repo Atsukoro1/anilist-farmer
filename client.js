@@ -63,6 +63,7 @@ export default class Client {
 
     /**
      * Fetch global or following feed
+     * 
      * @param {Object} obj 
      * @param {Number} [1] obj.page Number of page you want to return
      * @param {String} [global] obj.type Type of feed (following or global)
@@ -147,6 +148,7 @@ export default class Client {
      * Fetch user by username
      * 
      * @param {Object} obj 
+     * @param {Number} obj.id Unique identificator of the anilist user
      * @param {String} obj.name Username of the anilist user
      * 
      * @returns {Promise<Error | Object>}
@@ -155,7 +157,8 @@ export default class Client {
         return requester({
             query: fetchuserQuery,
             variables: {
-                name: obj?.name
+                id: obj.id,
+                name: obj.name
             },
             instance: this.authorizedInstance
         })
