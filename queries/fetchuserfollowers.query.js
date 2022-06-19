@@ -1,0 +1,20 @@
+export default `
+query ($id: Int!, $page: Int) {
+    Page(page: $page) {
+      pageInfo {
+        total
+        perPage
+        currentPage
+        lastPage
+        hasNextPage
+      }
+      followers(userId: $id, sort: USERNAME) {
+        id
+        name
+        avatar {
+          large
+        }
+      }
+    }
+  }
+`  
