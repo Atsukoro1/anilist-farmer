@@ -7,7 +7,6 @@ dotenv.config();
 const cl = new Client(process.env.TOKEN);
 
 const users = [];
-const toUnfollow = [];
 let followedBefore = null;
 let rateLimitedTo = Date.now();
 
@@ -79,31 +78,13 @@ const findMoreUsers = async () => {
 
         feed.Page.activities.map(el => {
             addUser(el.user.id);
-            // findUserFollowers(el.user.id);
+            findUserFollowers(el.user.id);
         });
     } catch(_) {
         console.log(_)
         return;
     }
 };
-
-const unfollowUserAfter = (userId) => {
-    if((Date.now() - rateLimitedTo) < 0) {
-        return console.log(`Our client is ratelimited for ${Date.now() - rateLimitedTo} miliseconds!`);
-    }
-
-    setTimeout(async () => {
-        const unf = await cl.toggleFollow({
-            id: userId
-        });
-
-        if(unf instanceof Error) {
-            console.log(`Failed to unfollow user [${userId}] ${unf.retryAfter}`);
-        } else {
-            console.log(`Unfollowed user [${userId}]`);
-        }
-    }, 60000);
-}
 
 const followLastUser = async () => {
     if((Date.now() - rateLimitedTo) < 0) {
@@ -134,7 +115,6 @@ const followLastUser = async () => {
                 console.log(`Can't follow ${found.User.name} [${found.User.id}], prob. because of ratelimit | ${found.retryAfter}`);
             } else {
                 followedBefore = users[0];
-                unfollowUserAfter(users[0]);
                 console.log(`Sucefully followed ${found.User.name} [${found.User.id}]!`);
             }
         } else {
@@ -164,7 +144,7 @@ const tick = () => {
 cl.login()
 .then(async() => {
     const job = new CronJob(
-        "*/6 * * * * *",
+        "*/3 * * * * *",
         tick,
         null,
         true,
