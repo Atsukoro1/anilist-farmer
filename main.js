@@ -70,7 +70,7 @@ const findMoreUsers = async () => {
         console.log("Successfully fetched global feed!")
         const feed = await cl.fetchGlobal({
             page: 1,
-            perPage: 5
+            perPage: 50
         });
 
         if(feed instanceof Error) return console.log(
@@ -79,7 +79,7 @@ const findMoreUsers = async () => {
 
         feed.Page.activities.map(el => {
             addUser(el.user.id);
-            findUserFollowers(el.user.id);
+            // findUserFollowers(el.user.id);
         });
     } catch(_) {
         console.log(_)
