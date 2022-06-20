@@ -7,6 +7,7 @@ dotenv.config();
 const cl = new Client(process.env.TOKEN);
 
 const users = [];
+const toUnfollow = [];
 let followedBefore = null;
 let rateLimitedTo = Date.now();
 
@@ -97,7 +98,7 @@ const unfollowUserAfter = (userId) => {
         });
 
         if(unf instanceof Error) {
-            console.log(`Failed to unfollow user [${userId}]`);
+            console.log(`Failed to unfollow user [${userId}] ${unf.retryAfter}`);
         } else {
             console.log(`Unfollowed user [${userId}]`);
         }
@@ -114,7 +115,10 @@ const followLastUser = async () => {
             id: users[0]
         });
     
-        if(found instanceof Error) return console.log(`Failed to fetch user [${users[0]}] ${found.retryAfter}`);
+        if(found instanceof Error) {
+            users.shift();
+            return console.log(`Failed to fetch user [${users[0]}] ${found.retryAfter}`);
+        }
 
         if(followedBefore == users[0]) {
             users.shift();
