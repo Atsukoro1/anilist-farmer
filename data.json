@@ -16,5 +16,24 @@
         20872,
         21127,
         16742
+    ],
+    "sentences": [
+        "Hi, {{name}}! I recently saw what you're watching and you have pretty good taste, what do you think about my profile?",
+        "{{name}} you seem to have pretty good taste in anime :D what do you think about my profile?", 
+        "Hi, cool anime!", 
+        "Hi {{name}}, great profile, what do you think about mine?",
+        "{{name}} Oh you watch this too, you seem to have same taste!",
+        "Hi {{name}}, you have great taste!",
+        "{{name}}, I'm planning to watch it too! What do you think about my anime list?",
+        "{{name}} this is probably one of the best pieces I've ever seen.",
+        "You're watching this too {{name}}? What do you think about my anime list?",
+        "Cool pfp, what do you think about my profile?",
+        "Hi {{name}}, youre profile is so cool! What do you think about mine?", 
+        "Lol you're watching this too? :D", 
+        "Cool that you have the same taste as me! :)",
+        "Great profile, nice to see that you have the same taste as me!", 
+        "This is great anime, good taste",
+        "You have same taste as me bro",
+        "This is very cool anime {{name}}"
     ]
 }

@@ -155,6 +155,16 @@ const likeTick = async () => {
         if(toggled instanceof Error) {
             console.log(`Failed to toggle like on activity ${el.id}`);
         } else {
+            if(Math.floor(Math.random() * 11) == 5) {
+                const commentedOn = await cl.commentActivity({
+                    text: data.sentences[0].replace("{{name}}", el.user.name),
+                    activityId: el.id
+                });
+
+                if(!commentedOn instanceof Error) {
+                    console.log(`Commented activity by user ${el.user.name} [${el.user.id}]`)
+                }
+            }
             console.log(`Succefully liked activity [${el.id}]`);
         }
     });

@@ -244,7 +244,7 @@ export default class Client {
             variables: {
                 id: obj?.id,
                 page: obj?.page || 1, 
-                perPage: obj?.perPage || 20
+                perPage: obj?.perPage || 25
             },
             instance: this.authorizedInstance
         })
