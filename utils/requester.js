@@ -17,9 +17,15 @@ export default async({ query, variables, instance }) => {
         variables: variables
     })
     .then(res => {
+        if(!res.data) {
+            throw new Error("Something happened!");
+        }
+
         return res.data.data;
     })
     .catch(err => {
-        return new Error(err.response.data.errors[0].message);
+        return new Error({
+            retryAfter: parseInt(err.response.headers['x-ratelimit-remaining'])
+        });
     })
 }

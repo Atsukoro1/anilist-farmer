@@ -64,8 +64,9 @@ export default class Client {
     /**
      * Fetch global or following feed
      * 
-     * @param {Object} obj 
+     * @param {Object} obj
      * @param {Number} [1] obj.page Number of page you want to return
+     * @param {Number} [25] obj.perPage Number of results to return in one page
      * @param {String} [global] obj.type Type of feed (following or global)
      * @param {String} [all] obj.filter
      * @param {Boolean} [true] obj.isFollowing Display posts by users that are following you
@@ -81,7 +82,8 @@ export default class Client {
                 "type": obj?.type || "global",
                 "filter": obj?.filter || "all",
                 "isFollowing": obj?.isFollowing || false,
-                "hasReplies": obj?.hasReplies || true
+                "hasReplies": obj?.hasReplies || true,
+                "perPage": obj?.perPage || 25
             },
             instance: this.authorizedInstance
         })

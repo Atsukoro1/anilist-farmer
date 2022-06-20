@@ -1,6 +1,6 @@
 export default `
-query ($isFollowing: Boolean = true, $hasReplies: Boolean = false, $activityType: ActivityType, $page: Int) {
-    Page(page: $page, perPage: 25) {
+query ($isFollowing: Boolean = true, $hasReplies: Boolean = false, $activityType: ActivityType, $page: Int, $perPage: Int) {
+    Page(page: $page, perPage: $perPage) {
       pageInfo {
         total
         perPage
