@@ -114,7 +114,7 @@ const followLastUser = async () => {
             id: users[0]
         });
     
-        if(found instanceof Error) return console.log(`Failed to fetch user [${users[0]}]`);
+        if(found instanceof Error) return console.log(`Failed to fetch user [${users[0]}] ${found.retryAfter}`);
 
         if(followedBefore == users[0]) {
             users.shift();
@@ -127,7 +127,7 @@ const followLastUser = async () => {
             });
     
             if(typeof toggledF !== 'object') {
-                console.log(`Can't follow ${found.User.name} [${found.User.id}], prob. because of ratelimit`);
+                console.log(`Can't follow ${found.User.name} [${found.User.id}], prob. because of ratelimit | ${found.retryAfter}`);
             } else {
                 followedBefore = users[0];
                 unfollowUserAfter(users[0]);
