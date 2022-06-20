@@ -6,7 +6,8 @@ import {
     fetchuseranimeQuery,
     fetchuserfollowingQuery,
     togglefollowQuery,
-    togglelikeQuery
+    togglelikeQuery,
+    fetchanimeactivitiesQuery
 } from './queries/index.js';
 import parseSessionCookie from './utils/parsesessioncookie.js'
 import requester from './utils/requester.js';
@@ -226,6 +227,28 @@ export default class Client {
             instance: this.authorizedInstance
         });
     }
+
+    /**
+     * Fetch activities from specific anime
+     * 
+     * @param {Object} obj
+     * @param {Number} id Id of the anime
+     * @param {Number} [1] page Number of the page you want to fetch
+     * @param {Number} [20] perPage Number of results to return from one page
+     * 
+     * @returns {Promise<Error | Object>} 
+     */
+    fetchAnimeActivities = (obj = {}) => {
+        return requester({
+            query: fetchanimeactivitiesQuery,
+            variables: {
+                id: obj?.id,
+                page: obj?.page || 1, 
+                perPage: obj?.perPage || 20
+            },
+            instance: this.authorizedInstance
+        })
+    };
     
     constructor(token) {
         this.rememberMeCookie = token;

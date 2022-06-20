@@ -1,3 +1,4 @@
+import fetchanimeactivitiesQuery from "./fetchanimeactivities.query.js";
 import commentactivityQuery from "./commentactivity.query.js";
 import fetchuseranimeQuery from "./fetchuseranime.query.js";
 import createactivityQuery from "./createactivity.query.js";
@@ -11,6 +12,7 @@ import togglelikeQuery from "./togglelike.query.js";
 export {
     commentactivityQuery,
     createactivityQuery,
+    fetchanimeactivitiesQuery,
     fetchGlobalQuery,
     fetchuserQuery,
     fetchuserfollowersQuery,

@@ -1,4 +1,5 @@
 import Client from "./client.js";
+import data from './data.json' assert {type: "json"};
 import { CronJob } from "cron";
 import dotenv from 'dotenv';
 
@@ -69,7 +70,7 @@ const findMoreUsers = async () => {
         console.log("Successfully fetched global feed!")
         const feed = await cl.fetchGlobal({
             page: 1,
-            perPage: 50
+            perPage: 20
         });
 
         if(feed instanceof Error) return console.log(
@@ -141,9 +142,27 @@ const tick = () => {
     }
 };
 
+const likeTick = async () => {
+    const activities = await cl.fetchAnimeActivities({
+        id: data.animeIds[Math.floor(Math.random() * data.animeIds.length)]
+    });
+
+    activities.Page.activities.forEach(async el => {
+        const toggled = await cl.toggleLike({
+            id: el.id
+        });
+
+        if(toggled instanceof Error) {
+            console.log(`Failed to toggle like on activity ${el.id}`);
+        } else {
+            console.log(`Succefully liked activity [${el.id}]`);
+        }
+    });
+};
+
 cl.login()
 .then(async() => {
-    const job = new CronJob(
+    new CronJob(
         "*/3 * * * * *",
         tick,
         null,
@@ -151,7 +170,13 @@ cl.login()
         'Europe/Prague'
     );
 
-    job.start();
+    new CronJob(
+        "*/60 * * * * *",
+        likeTick,
+        null,
+        true,
+        'Europe/Prague'
+    );
 
     process.stdout.write(`Bot started!\n`);
 })
