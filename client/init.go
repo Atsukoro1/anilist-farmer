@@ -19,15 +19,6 @@ func (str *ClientStr) Init() *ClientStr {
 	str.authorizedBaseUrl = "https://graphql.anilist.co"
 	str.HttpClient = http.Client{}
 
-	str.FetchGlobal = func() {
-		const query string = "mutation($id:Int,$type:LikeableType){ToggleLike:ToggleLikeV2(id:$id,type:$type){... on ListActivity{id likeCount isLiked}... on MessageActivity{id likeCount isLiked}... on TextActivity{id likeCount isLiked}... on ActivityReply{id likeCount isLiked}... on Thread{id likeCount isLiked}... on ThreadComment{id likeCount isLiked}}}"
-		type Variables struct {
-			ID   int    `json:"id"`
-			Type string `json:"type"`
-		}
-		MakeRequest(str, query, Variables{ID: 409613355, Type: "ACTIVITY"})
-	}
-
 	str.Authorize = func(token string) (bool, error) {
 		str.RememberMeCookie = token
 

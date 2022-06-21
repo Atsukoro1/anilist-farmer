@@ -32,7 +32,7 @@ func MakeRequest(
 	var body string = "{ \"query\": " + "\"" + query + "\"" + ", \"variables\": " + string(strVar) + " }"
 	req, _ := http.NewRequest(
 		"POST",
-		client.authorizedBaseUrl+"/graphql",
+		fmt.Sprintf("%s/graphql", client.authorizedBaseUrl),
 		bytes.NewBuffer([]byte(body)),
 	)
 	req.AddCookie(&sessionC)
