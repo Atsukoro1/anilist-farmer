@@ -19,6 +19,10 @@ func (str *ClientStr) Init() *ClientStr {
 	str.authorizedBaseUrl = "https://graphql.anilist.co"
 	str.HttpClient = http.Client{}
 
+	str.FetchGlobal = func() {
+		MakeRequest(str, "", "")
+	}
+
 	str.Authorize = func(token string) (bool, error) {
 		cookie := http.Cookie{
 			Name:     "remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d",

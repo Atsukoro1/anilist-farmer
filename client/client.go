@@ -17,4 +17,5 @@ type ClientStr struct {
 	// Session that will be used to authorize at protected requests
 	LaravelSessionCookie string
 	Authorize            func(token string) (bool, error)
+	FetchGlobal          func()
 }

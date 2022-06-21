@@ -1,9 +1,11 @@
 package client
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
-	"strings"
 )
 
 /*
@@ -14,20 +16,50 @@ func MakeRequest(
 	query string,
 	variables any,
 ) (error, any) {
-	reader := strings.NewReader("")
+	sessionC := http.Cookie{
+		Name:     "laravel_session",
+		Value:    client.LaravelSessionCookie,
+		HttpOnly: true,
+	}
 
+	requestWebC := http.Cookie{
+		Name:     "remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d",
+		Value:    client.RememberMeCookie,
+		HttpOnly: true,
+	}
+
+	strVar, _ := json.Marshal(variables)
 	req, _ := http.NewRequest(
 		"POST",
 		client.authorizedBaseUrl,
-		reader,
+		bytes.NewBuffer([]byte(
+			fmt.Sprintf(`{
+				"query": %s, 
+				"variables": %s 
+			}`,
+				query, string(strVar)),
+		)),
 	)
+	req.AddCookie(&sessionC)
+	req.AddCookie(&requestWebC)
+	req.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:101.0) Gecko/20100101 Firefox/101.0")
+	req.Header.Add("Connection", "close")
+	req.Header.Add("Content-Type", "application/json")
 
 	res, err := client.HttpClient.Do(req)
 	if err != nil {
+		fmt.Println(err)
 		return err, nil
 	}
 
-	fmt.Println(res.Body)
+	st, err := io.ReadAll(res.Body)
+	if err != nil {
+		fmt.Println(err)
+		return err, nil
+	}
+
+	fmt.Println(res.StatusCode)
+	fmt.Println(string(st))
 
 	return nil, res.Body
 }
