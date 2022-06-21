@@ -20,10 +20,17 @@ func (str *ClientStr) Init() *ClientStr {
 	str.HttpClient = http.Client{}
 
 	str.FetchGlobal = func() {
-		MakeRequest(str, "", "")
+		const query string = "mutation($id:Int,$type:LikeableType){ToggleLike:ToggleLikeV2(id:$id,type:$type){... on ListActivity{id likeCount isLiked}... on MessageActivity{id likeCount isLiked}... on TextActivity{id likeCount isLiked}... on ActivityReply{id likeCount isLiked}... on Thread{id likeCount isLiked}... on ThreadComment{id likeCount isLiked}}}"
+		type Variables struct {
+			ID   int    `json:"id"`
+			Type string `json:"type"`
+		}
+		MakeRequest(str, query, Variables{ID: 409613355, Type: "ACTIVITY"})
 	}
 
 	str.Authorize = func(token string) (bool, error) {
+		str.RememberMeCookie = token
+
 		cookie := http.Cookie{
 			Name:     "remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d",
 			Value:    token,
@@ -32,7 +39,7 @@ func (str *ClientStr) Init() *ClientStr {
 
 		req, _ := http.NewRequest(
 			"POST",
-			fmt.Sprintf("%s/graphql", str.baseUrl),
+			fmt.Sprintf("%s/404", str.baseUrl),
 			nil,
 		)
 

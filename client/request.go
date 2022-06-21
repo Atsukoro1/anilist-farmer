@@ -29,21 +29,16 @@ func MakeRequest(
 	}
 
 	strVar, _ := json.Marshal(variables)
+	var body string = "{ \"query\": " + "\"" + query + "\"" + ", \"variables\": " + string(strVar) + " }"
 	req, _ := http.NewRequest(
 		"POST",
-		client.authorizedBaseUrl,
-		bytes.NewBuffer([]byte(
-			fmt.Sprintf(`{
-				"query": %s, 
-				"variables": %s 
-			}`,
-				query, string(strVar)),
-		)),
+		client.authorizedBaseUrl+"/graphql",
+		bytes.NewBuffer([]byte(body)),
 	)
 	req.AddCookie(&sessionC)
 	req.AddCookie(&requestWebC)
 	req.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:101.0) Gecko/20100101 Firefox/101.0")
-	req.Header.Add("Connection", "close")
+	req.Header.Add("Connection", "Close")
 	req.Header.Add("Content-Type", "application/json")
 
 	res, err := client.HttpClient.Do(req)
@@ -58,7 +53,8 @@ func MakeRequest(
 		return err, nil
 	}
 
-	fmt.Println(res.StatusCode)
+	fmt.Println(res.Request.Cookie("laravel_session"))
+	fmt.Println(res.Request.Cookie("remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d"))
 	fmt.Println(string(st))
 
 	return nil, res.Body

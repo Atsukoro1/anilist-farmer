@@ -2,13 +2,22 @@ package main
 
 import (
 	"anilistbot/client"
+	"log"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	err := godotenv.Load("./.env")
+	if err != nil {
+		log.Fatal("Unable to load dotenv file!")
+	}
+
 	var client client.ClientStr
 	client.Init()
 
-	client.Authorize("eyJpdiI6IjZJb3hrOFUrSjE0Qm9tajkrR25CZUE9PSIsInZhbHVlIjoiNUNwZTBXWjIwYjFNN1d2OElMQkFENWpKdkZYM0VJMTZ0KytyTGd1TlFWOCtqdDdTdE1rQkRSRmRKQTB6d1hTcFpkMXpkNEtCUTNkTHhabFRGblwvZDAyd2xtQnVERDZJNElHSmxoWUZJN2hWSVJiaHpVUFZmR3Fpc1o2b1R3cmZ3WU1BTkVhN1pIbXpjWVo1TTJ0bUJZM2JzMWpsZkNSVnI1SHdUb0pXbWsyclJQbmg1cEZRY0xsVEJzazFlSzNzbyIsIm1hYyI6ImYxZTA2YmExYTY2ZDdiODg0MjA5YjNhNGE1OWJhMjhhZmUyY2M5MGE2NTlkMTMxMjJjNWU1ODExOTUxY2Q5NTQifQ%3D%3D")
+	client.Authorize(os.Getenv("TOKEN"))
 
 	client.FetchGlobal()
 }
